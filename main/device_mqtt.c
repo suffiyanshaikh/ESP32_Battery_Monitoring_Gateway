@@ -1,6 +1,6 @@
  #include "device_mqtt.h"
 
-extern char device_version[20];
+extern char device[20];
 static const char *TAG = "device_mqtt";
 
 

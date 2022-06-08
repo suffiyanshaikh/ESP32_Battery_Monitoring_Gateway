@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-
+#include <string.h>
+#include "esp_system.h"
+#include "esp_log.h"
 #include "lwip/sockets.h"
 #include "lwip/dns.h"
 #include "lwip/netdb.h"
@@ -17,9 +19,9 @@ extern "C" {
  * 
  * 
  */
-#define DEVICE_MQTT_URL ESP_MQTT_URL
-#define DEVICE_MQTT_USERNAME ESP_MQTT_USERNAME
-#define DEVICE_MQTT_PASSWORD    ESP_MQTT_PASSWORD
+#define DEVICE_MQTT_URL CONFIG_ESP_MQTT_URL
+#define DEVICE_MQTT_USERNAME CONFIG_ESP_MQTT_USERNAME
+#define DEVICE_MQTT_PASSWORD    CONFIG_ESP_MQTT_PASSWORD
 
 
 typedef struct mqtt_configure
@@ -55,6 +57,7 @@ void log_error_if_nonzero(const char *message, int error_code);
 void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data);
 
 void mqtt_app_start(char mac_id[]);
+
 void cmd_parser(char *server_cmd);
 
 

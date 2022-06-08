@@ -1,8 +1,8 @@
 #include "device_wifi.h"
-
+#include "device_mqtt.h"
 static const char *TAG = "wifi";
 
-
+extern char mac_id[20];
 void event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data)
 
@@ -23,6 +23,7 @@ void event_handler(void* arg, esp_event_base_t event_base,
         ESP_LOGI(TAG, "IP:" IPSTR, IP2STR(&event->ip_info.ip));
         ESP_LOGI(TAG, "SUBNET:" IPSTR, IP2STR(&event->ip_info.netmask));
         ESP_LOGI(TAG, "GW:" IPSTR, IP2STR(&event->ip_info.gw));
+       // mqtt_app_start(mac_id);
     }
 
 }
@@ -93,15 +94,15 @@ void wifi_init_sta(void)
 
     /* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually
      * happened. */
-    // if (bits & WIFI_CONNECTED_BIT) {
-    //     ESP_LOGI(TAG, "connected to ap SSID:%s password:%s",
-    //              EXAMPLE_ESP_WIFI_SSID, EXAMPLE_ESP_WIFI_PASS);
-    // } else if (bits & WIFI_FAIL_BIT) {
-    //     ESP_LOGI(TAG, "Failed to connect to SSID:%s, password:%s",
-    //              EXAMPLE_ESP_WIFI_SSID, EXAMPLE_ESP_WIFI_PASS);
-    // } else {
-    //     ESP_LOGE(TAG, "UNEXPECTED EVENT");
-    // }
+    if (bits & WIFI_CONNECTED_BIT) {
+        ESP_LOGI(TAG, "connected to ap SSID:%s password:%s",
+                 EXAMPLE_ESP_WIFI_SSID, EXAMPLE_ESP_WIFI_PASS);
+    } else if (bits & WIFI_FAIL_BIT) {
+        ESP_LOGI(TAG, "Failed to connect to SSID:%s, password:%s",
+                 EXAMPLE_ESP_WIFI_SSID, EXAMPLE_ESP_WIFI_PASS);
+    } else {
+        ESP_LOGE(TAG, "UNEXPECTED EVENT");
+    }
 
     /* The event will not be processed after unregister */
     ESP_ERROR_CHECK(esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, instance_got_ip));
