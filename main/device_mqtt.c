@@ -3,6 +3,7 @@
 extern char device[20];
 static const char *TAG = "device_mqtt";
 
+esp_mqtt_client_handle_t client;
 
 /**
  * @brief error logs
@@ -106,12 +107,17 @@ void mqtt_app_start(char mac_id[])
     .password = DEVICE_MQTT_PASSWORD,
 };
     
-    esp_mqtt_client_handle_t client = esp_mqtt_client_init(&mqtt_config);
+     client = esp_mqtt_client_init(&mqtt_config);
     /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(client);
 
 }
+
+void mqtt_app_stop()
+{
+esp_mqtt_client_stop(client);
+} 
 
 void cmd_parser(char *server_cmd)
 {
