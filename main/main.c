@@ -14,6 +14,7 @@
 
 #include "device_wifi.h"
 #include "device_mqtt.h"
+#include "device_adc.h"
 
 #define FW_Version 1.0
 char mac_id[20];
@@ -23,6 +24,8 @@ char device[100];//
 
 
 static const char *TAG = "device";
+
+static void Read_Voltage();
 
 void app_main(void)
 {
@@ -46,8 +49,25 @@ void app_main(void)
   ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
   wifi_init_sta();
 
-  ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
-  mqtt_app_start(mac_id);
+  //ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
+  //mqtt_app_start(mac_id);
+
+  adc_init();
+
+
+  
+  xTaskCreate(Read_Voltage, "read_volatge", 2048*2, NULL, configMAX_PRIORITIES, NULL);  
 
 
 }
+  static void Read_Voltage(){
+
+    for(;;){
+
+
+  get_voltage();
+  vTaskDelay(5000 / portTICK_PERIOD_MS);
+    }
+  }
+
+
