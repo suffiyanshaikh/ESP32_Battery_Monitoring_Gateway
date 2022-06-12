@@ -27,23 +27,20 @@ extern "C" {
 #define EXAMPLE_ESP_WIFI_PASS      CONFIG_ESP_WIFI_PASSWORD
 #define EXAMPLE_ESP_MAXIMUM_RETRY  CONFIG_ESP_MAXIMUM_RETRY
 
+wifi_ap_record_t wifidata; //To read wifi data
+int8_t rssi;               //wifi rssi
+
+
+
 /* FreeRTOS event group to signal when we are connected*/
-EventGroupHandle_t s_wifi_event_group;
+ EventGroupHandle_t Wifi_events;
 
-/* The event group allows multiple bits for each event, but we only care about two events:
- * - we are connected to the AP with an IP
- * - we failed to connect after the maximum amount of retries */
-#define WIFI_CONNECTED_BIT BIT0
-#define WIFI_FAIL_BIT      BIT1
-
-
-// int s_retry_num = 0;
 
 void event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data);
 
 /**
- * @brief 
+ * @brief Intialize wifi in station mode
  * 
  */
 void wifi_init_sta(void);
@@ -52,4 +49,4 @@ void wifi_init_sta(void);
 #ifdef __cplusplus
 }
 #endif
-#endif // Ethernet
+#endif // wifi

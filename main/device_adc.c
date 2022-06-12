@@ -5,6 +5,20 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 #include "device_adc.h"
+#include "device_mqtt.h"
+#include "device_wifi.h"
+
+static const char *TAG = "ADC";
+
+
+extern esp_mqtt_client_handle_t client;
+extern char mac_id[20];
+char Json_String[100];      //Json
+extern struct mqtt_configure mqtt_topics;
+extern int8_t rssi;
+extern wifi_ap_record_t wifidata;
+
+
 
 
 #define DEFAULT_VREF    1100        //Use adc2_vref_to_gpio() to obtain a better estimate
@@ -93,6 +107,19 @@ void get_voltage()
         uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, adc_chars);
         printf("Raw: %d\tVoltage: %dmV\n", adc_reading, voltage);
         vTaskDelay(pdMS_TO_TICKS(1000));
+
+        esp_wifi_sta_get_ap_info(&wifidata);
+        rssi= wifidata.rssi;
+
+
+        sprintf(Json_String,"{\"device\":\"%s\",\"rssi\":\"%d\",\"data\":[\"Volt\":\"%0.2f\"]}", mac_id,rssi,voltage*0.001);
+        int  msg_id = esp_mqtt_client_publish(client,mqtt_topics.data_topic,Json_String, 0, 0, 1);
+        ESP_LOGI(TAG, "sent publish successful,msg_id=%d", msg_id);
+        ESP_LOGI(TAG, " publish successfull on topic=%s", mqtt_topics.data_topic);
+        ESP_LOGI(TAG, " publish successfull data=%s",Json_String);
+        printf("\n");
+
+
     }
 
 

@@ -2,15 +2,18 @@
 #include "device_mqtt.h"
 
 static const char *TAG = "wifi";
-static EventGroupHandle_t Wifi_events;
-
-const int CONNECTED_GOT_IP = BIT0;
-const int DISCONNECTED = BIT1;
 
 extern char mac_id[20];
 extern esp_mqtt_client_handle_t client;
+extern bool Mqtt_conn_flag;
 
 
+/* The event group allows multiple bits for each event, but we only care about two events:
+ * - we are connected to the AP with an IP
+ * - we failed to connect after the maximum amount of retries */
+
+const int CONNECTED_GOT_IP = BIT0;
+const int DISCONNECTED = BIT1;
 
 
 void  event_handler( void * event_handler_arg,esp_event_base_t event_base,int32_t event_id,void * even_data)
@@ -23,7 +26,7 @@ void  event_handler( void * event_handler_arg,esp_event_base_t event_base,int32_
     esp_wifi_connect();
     ESP_LOGI(TAG,"WIFI STA_START");
 
-        break;
+    break;
 
     case WIFI_EVENT_STA_CONNECTED:
     ESP_LOGI(TAG,"Wifi connected with SSID:%s",EXAMPLE_ESP_WIFI_SSID);
@@ -31,6 +34,7 @@ void  event_handler( void * event_handler_arg,esp_event_base_t event_base,int32_
     break;
 
     case  WIFI_EVENT_STA_DISCONNECTED:
+    if(Mqtt_conn_flag == true)
     mqtt_app_stop();
     esp_wifi_connect();
     ESP_LOGI(TAG,"Trying to connect with SSID:%s ",EXAMPLE_ESP_WIFI_SSID);
@@ -40,10 +44,7 @@ void  event_handler( void * event_handler_arg,esp_event_base_t event_base,int32_
 
     case IP_EVENT_STA_GOT_IP:
      mqtt_app_start(mac_id);
-    // ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
-    //  ESP_LOGI(TAG, "IP:" IPSTR, IP2STR(&event->ip_info.ip));
-    //  ESP_LOGI(TAG, "SUBNET:" IPSTR, IP2STR(&event->ip_info.netmask));
-    //  ESP_LOGI(TAG, "GW:" IPSTR, IP2STR(&event->ip_info.gw));
+    
 
     break;
 

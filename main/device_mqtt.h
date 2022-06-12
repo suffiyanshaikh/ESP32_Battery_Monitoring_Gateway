@@ -13,6 +13,7 @@ extern "C" {
 #include "lwip/netdb.h"
 #include "mqtt_client.h"
 
+esp_mqtt_client_handle_t client;
 
 /**
  * @brief MQTT Configuration
@@ -34,7 +35,6 @@ char logs_topic[50];
 
 }mqtt_configure;
 mqtt_configure mqtt_topics;
-
 
 /**
  * @brief mqtt errors

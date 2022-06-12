@@ -5,7 +5,6 @@
 #include "esp_log.h"
 #include "sdkconfig.h"
 
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
@@ -18,14 +17,14 @@
 
 #define FW_Version 1.0
 char mac_id[20];
-uint8_t base_mac_addr[6] = {0};
-char device[100];//
+uint8_t base_mac_addr[6] = {0};  // esp mac address
+char device[100];               //  device details
 
-
+extern bool Mqtt_conn_flag ;    //  MQTT Coonection Flag
 
 static const char *TAG = "device";
 
-static void Read_Voltage();
+static void Read_Voltage();     //  To Read Voltage
 
 void app_main(void)
 {
@@ -49,25 +48,32 @@ void app_main(void)
   ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
   wifi_init_sta();
 
-  //ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
-  //mqtt_app_start(mac_id);
+  vTaskDelay(5000 / portTICK_PERIOD_MS);
 
+
+  //Start ADC
   adc_init();
 
-
-  
   xTaskCreate(Read_Voltage, "read_volatge", 2048*2, NULL, configMAX_PRIORITIES, NULL);  
-
-
 }
-  static void Read_Voltage(){
-
-    for(;;){
 
 
-  get_voltage();
-  vTaskDelay(5000 / portTICK_PERIOD_MS);
-    }
+static void Read_Voltage()
+{
+
+  for(;;)
+  {
+
+  if (Mqtt_conn_flag==true)
+  {
+  
+    get_voltage();
+
   }
+  vTaskDelay(5000 / portTICK_PERIOD_MS);
+
+  }
+  
+}
 
 

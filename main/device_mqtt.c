@@ -2,8 +2,8 @@
 
 extern char device[20];
 static const char *TAG = "device_mqtt";
+bool Mqtt_conn_flag=false;
 
-esp_mqtt_client_handle_t client;
 
 /**
  * @brief error logs
@@ -11,7 +11,6 @@ esp_mqtt_client_handle_t client;
  * @param message //error
  * @param error_code //message codes
  */
-
 void log_error_if_nonzero(const char *message, int error_code)
 {
     if (error_code != 0) {
@@ -27,10 +26,12 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
     int msg_id;
     switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
+        Mqtt_conn_flag=true;
         ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
         msg_id = esp_mqtt_client_publish(client,mqtt_topics.logs_topic,device, 0, 0, 0);
         ESP_LOGI(TAG, "sent publish successful  , msg_id=%d", msg_id);
-        ESP_LOGI(TAG, " publish successful, topic=%s,data=%s", mqtt_topics.logs_topic,device);
+        ESP_LOGI(TAG, " publish successful on topic=%s", mqtt_topics.logs_topic);
+        ESP_LOGI(TAG, " publish successful,data=%s",device);
 
 
         msg_id = esp_mqtt_client_subscribe(client,mqtt_topics.cmd_topic, 0);
@@ -40,6 +41,7 @@ void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event
 
         break;
     case MQTT_EVENT_DISCONNECTED:
+        Mqtt_conn_flag=false;
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
         break;
 
@@ -107,7 +109,7 @@ void mqtt_app_start(char mac_id[])
     .password = DEVICE_MQTT_PASSWORD,
 };
     
-     client = esp_mqtt_client_init(&mqtt_config);
+    client = esp_mqtt_client_init(&mqtt_config);
     /* The last argument may be used to pass data to the event handler, in this example mqtt_event_handler */
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(client);
