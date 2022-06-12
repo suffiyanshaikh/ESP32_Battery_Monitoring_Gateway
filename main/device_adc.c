@@ -26,10 +26,10 @@ extern wifi_ap_record_t wifidata;
 
 esp_adc_cal_characteristics_t *adc_chars;
 #if CONFIG_IDF_TARGET_ESP32
-const adc_channel_t channel = ADC_CHANNEL_0;     //GPIO34 if ADC1
+const adc_channel_t channel = ADC_CHANNEL_0;     //GPIO36 if ADC1_CH0
 const adc_bits_width_t width = ADC_WIDTH_BIT_12;
 #elif CONFIG_IDF_TARGET_ESP32S2
-const adc_channel_t channel = ADC_CHANNEL_0;     // GPIO7 if ADC1,
+const adc_channel_t channel = ADC_CHANNEL_0;     // GPIO1 if ADC1_CH0
 const adc_bits_width_t width = ADC_WIDTH_BIT_13;
 #endif
 const adc_atten_t atten = ADC_ATTEN_DB_11;
