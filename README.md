@@ -47,7 +47,7 @@ In the Device Configuration Menu:
 
 ## Example Output
 
-![image](https://user-images.githubusercontent.com/42150715/173248049-5dd8ac40-8a2e-403f-a9d6-b507e3fbbb9b.png)
+![image](https://user-images.githubusercontent.com/42150715/173294716-287c5c3d-f59a-462e-b2d9-b4304a05220d.png)
 
 
 
