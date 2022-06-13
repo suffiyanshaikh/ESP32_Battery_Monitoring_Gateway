@@ -1,32 +1,64 @@
-# _Sample project_
-
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
-
-This is the simplest buildable example. The example is used by command `idf.py create-project`
-that copies the project to user specified path and set it's name. For more information follow the [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project)
+# ESP32 Battery Monitoring Gateway
 
 
+### Overview 
+An application is made on ESP32 to monitor the battery's voltage over the Internet. Enabling IoT in Battery monitoring system.
+Reading battery voltage on ESP32 ADC and publishing the data in JSON format over the cloud using MQTT protocol and Wifi 
+Connection.
 
-## How to use example
-We encourage the users to use the example as a template for the new projects.
-A recommended way is to follow the instructions on a [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project).
+Gateway Features
+* WiFi
+* MQTT
+* ADC
 
-## Example folder contents
+### NOTES
+* The following application can be run on **ESP32** and **ESP32S2** Target.
+* The batteries up to 3.3V ratings can be directly connected to ESP32 ADC pins, the voltage divider is mandatory if batteries
+rating are above 3.3V
 
-The project **sample_project** contains one source file in C language [main.c](main/main.c). The file is located in folder [main](main).
 
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt`
-files that provide set of directives and instructions describing the project's source files and targets
-(executable, library, or both). 
+## How to use the example
 
-Below is short explanation of remaining files in the project folder.
+ **Hardware Connections**
 
-```
-├── CMakeLists.txt
-├── main
-│   ├── CMakeLists.txt
-│   └── main.c
-└── README.md                  This is the file you are currently reading
-```
-Additionally, the sample project contains Makefile and component.mk files, used for the legacy Make based build system. 
-They are not used or needed when building with CMake and idf.py.
+ For ESP32 Target
+* Connect Battery Positive terminal to GPIO_36(ADC1_CH0).
+* Make the GND common of Battery and ESP
+
+ For ESP32S2 Target
+* Connect Battery Positive terminal to GPIO_01(ADC1_CH0).
+* Make the GND common of Battery and ESP
+
+**Configure the Project**
+
+Open the project configuration menu ( idf.py menuconfig).
+
+In the Device Configuration Menu:
+* Provide the Wi-Fi SSID and password of the AP you wish to connect to
+* Provide the MQTT Credentials you wish to connect with,ex:mqtt://test.mosquitto.org
+
+
+![Esp32_Battery_Monitoring](https://user-images.githubusercontent.com/42150715/173247536-c4a6a4b3-ff5c-4541-945a-b4b66561cbac.png)
+
+**Build and Flash**
+* Run idf.py -p PORT flash monitor to build and flash the project.
+
+
+
+## Example Output
+
+![image](https://user-images.githubusercontent.com/42150715/173248049-5dd8ac40-8a2e-403f-a9d6-b507e3fbbb9b.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
