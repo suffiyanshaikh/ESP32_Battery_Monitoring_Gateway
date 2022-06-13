@@ -112,7 +112,7 @@ void get_voltage()
         rssi= wifidata.rssi;
 
 
-        sprintf(Json_String,"{\"device\":\"%s\",\"rssi\":\"%d\",\"data\":[\"Volt\":\"%0.2f\"]}", mac_id,rssi,voltage*0.001);
+        sprintf(Json_String,"{\"device\":\"%s\",\"rssi\":\"%d\",\"data\":{\"Volt\":\"%0.2f\"}}", mac_id,rssi,voltage*0.001);
         int  msg_id = esp_mqtt_client_publish(client,mqtt_topics.data_topic,Json_String, 0, 0, 1);
         ESP_LOGI(TAG, "sent publish successful,msg_id=%d", msg_id);
         ESP_LOGI(TAG, " publish successfull on topic=%s", mqtt_topics.data_topic);
