@@ -47,9 +47,12 @@ In the Device Configuration Menu:
 
 ## Example Output
 
+### Serial Monitor Output
 ![image](https://user-images.githubusercontent.com/42150715/173294716-287c5c3d-f59a-462e-b2d9-b4304a05220d.png)
 
 
+#### MQTT Output
+![image](https://user-images.githubusercontent.com/42150715/173297413-7f5acceb-d14b-47a7-b56b-ee0459bf7306.png)
 
 
 
