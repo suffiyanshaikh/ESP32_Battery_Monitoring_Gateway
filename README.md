@@ -51,8 +51,16 @@ In the Device Configuration Menu:
 ![image](https://user-images.githubusercontent.com/42150715/173294716-287c5c3d-f59a-462e-b2d9-b4304a05220d.png)
 
 
-#### MQTT Output
+### MQTT Output
 ![image](https://user-images.githubusercontent.com/42150715/173297413-7f5acceb-d14b-47a7-b56b-ee0459bf7306.png)
+
+
+### Battery Discharge Graph
+![graph__01](https://user-images.githubusercontent.com/42150715/173531136-aaf1cb56-ec57-451a-8cc1-83abbb601e2f.png)
+
+
+### TEST SETUP
+![Test_setup](https://user-images.githubusercontent.com/42150715/173532173-9c945f93-b079-4ffa-9552-6595d247cce3.jpeg)
 
 
 
